@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Analytics | StockFlow</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans">
+
+    <!-- Shared Dynamic Sidebar -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="lg:pl-64 flex flex-col min-h-screen">
+
+        <!-- Shared Dynamic Topbar -->
+        <div id="topbar-container"></div>
+
+        <!-- Page Content -->
+        <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6">
+
+            <!-- Page Header & Action Bar -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm no-print">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Business Intelligence & Reports</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Comprehensive audit reports on inventory valuation, profit margins, and procurement.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" id="print-report-btn" class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
+                        <i data-lucide="printer" class="w-4 h-4 text-slate-500"></i>
+                        <span>Print Report</span>
+                    </button>
+                    <button type="button" id="export-report-csv" class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition-colors">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Export CSV</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Report Navigation Tabs -->
+            <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm overflow-x-auto no-print">
+                <div class="flex items-center gap-1.5 min-w-max">
+                    <button type="button" class="report-tab-btn px-4 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white shadow-sm transition-all flex items-center gap-2" data-report="inventory">
+                        <i data-lucide="package" class="w-4 h-4"></i>
+                        <span>Inventory Valuation</span>
+                    </button>
+                    <button type="button" class="report-tab-btn px-4 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center gap-2" data-report="sales">
+                        <i data-lucide="trending-up" class="w-4 h-4"></i>
+                        <span>Sales & Profits</span>
+                    </button>
+                    <button type="button" class="report-tab-btn px-4 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center gap-2" data-report="stock-in">
+                        <i data-lucide="arrow-down-circle" class="w-4 h-4"></i>
+                        <span>Stock In (Purchases)</span>
+                    </button>
+                    <button type="button" class="report-tab-btn px-4 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center gap-2" data-report="stock-out">
+                        <i data-lucide="arrow-up-circle" class="w-4 h-4"></i>
+                        <span>Stock Out (Dispatches)</span>
+                    </button>
+                    <button type="button" class="report-tab-btn px-4 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center gap-2" data-report="low-stock">
+                        <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                        <span>Low Stock Reorders</span>
+                    </button>
+                    <button type="button" class="report-tab-btn px-4 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center gap-2" data-report="category">
+                        <i data-lucide="tags" class="w-4 h-4"></i>
+                        <span>Category Summary</span>
+                    </button>
+                    <button type="button" class="report-tab-btn px-4 py-2 text-xs font-semibold rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center gap-2" data-report="supplier">
+                        <i data-lucide="truck" class="w-4 h-4"></i>
+                        <span>Supplier Performance</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters & Date Presets Toolbar -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3 no-print">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+
+                    <!-- Search Input -->
+                    <div class="relative">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="report-search-input" placeholder="Search report items..." class="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div>
+                        <select id="report-category-filter" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-slate-700">
+                            <option value="">All Categories</option>
+                        </select>
+                    </div>
+
+                    <!-- Product Filter -->
+                    <div>
+                        <select id="report-product-filter" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 text-slate-700">
+                            <option value="">All Products</option>
+                        </select>
+                    </div>
+
+                    <!-- Date Presets -->
+                    <div class="flex items-center gap-1 justify-end">
+                        <button type="button" class="date-preset-btn px-2.5 py-2 text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg transition-colors" data-preset="today">Today</button>
+                        <button type="button" class="date-preset-btn px-2.5 py-2 text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg transition-colors" data-preset="week">7 Days</button>
+                        <button type="button" class="date-preset-btn px-2.5 py-2 text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg transition-colors" data-preset="month">Month</button>
+                        <button type="button" class="date-preset-btn px-2.5 py-2 text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg transition-colors" data-preset="all">All</button>
+                    </div>
+                </div>
+
+                <!-- Date Range Inputs -->
+                <div id="report-date-filters" class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 text-xs text-slate-600">
+                    <span class="font-medium">Filter by Specific Date Range:</span>
+                    <input type="date" id="report-start-date" class="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 rounded-md focus:outline-none">
+                    <span class="text-slate-400">to</span>
+                    <input type="date" id="report-end-date" class="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 rounded-md focus:outline-none">
+                </div>
+            </div>
+
+            <!-- Report KPI Summary Cards -->
+            <div id="report-kpi-cards" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <!-- Dynamically generated metrics -->
+            </div>
+
+            <!-- Report Data Table -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden card-print">
+                <div class="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between">
+                    <div>
+                        <h3 id="report-table-title" class="text-sm sm:text-base font-bold text-slate-900">Report View</h3>
+                        <p class="text-xs text-slate-400">Calculated dynamically from live LocalStorage records</p>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-500 font-mono no-print">StockFlow Analytics</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table id="report-main-table" class="w-full text-left border-collapse">
+                        <thead id="report-table-head" class="bg-slate-50 text-slate-500 font-semibold text-[11px] uppercase tracking-wider border-b border-slate-200">
+                            <!-- Injected dynamically -->
+                        </thead>
+                        <tbody id="report-table-body" class="divide-y divide-slate-100">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Application Scripts -->
+    <script src="../assets/js/storage.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/reports.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            App.init('Reports & Analytics', ['Analytics', 'Reports']);
+            ReportsModule.init();
+        });
+    </script>
+</body>
+</html>

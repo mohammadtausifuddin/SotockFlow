@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings & Data Management | StockFlow</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans">
+
+    <!-- Shared Dynamic Sidebar -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="lg:pl-64 flex flex-col min-h-screen">
+
+        <!-- Shared Dynamic Topbar -->
+        <div id="topbar-container"></div>
+
+        <!-- Page Content -->
+        <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-5xl w-full mx-auto space-y-6">
+
+            <!-- Page Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Business & System Settings</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Configure store information, currency localization, reorder thresholds, and database backups.</p>
+                </div>
+            </div>
+
+            <!-- Settings Form & System Preferences -->
+            <form id="settings-form" class="space-y-6">
+
+                <!-- Store Profile Card -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+                    <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                        <i data-lucide="store" class="w-5 h-5 text-indigo-600"></i>
+                        <h3 class="text-sm font-bold text-slate-900">Store Profile & Commercial Identity</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                        <div class="sm:col-span-2">
+                            <label class="block font-semibold text-slate-700 mb-1" for="setting-store-name">Business / Store Name *</label>
+                            <input type="text" id="setting-store-name" required class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 font-semibold text-slate-900">
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1" for="setting-store-phone">Phone Number</label>
+                            <input type="text" id="setting-store-phone" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 font-mono">
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1" for="setting-store-email">Official Support Email</label>
+                            <input type="email" id="setting-store-email" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1" for="setting-tax-id">Tax ID / GSTIN / VAT Registration</label>
+                            <input type="text" id="setting-tax-id" class="w-full px-3 py-2 text-xs font-mono uppercase border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label class="block font-semibold text-slate-700 mb-1" for="setting-store-address">Warehouse / Store Physical Address</label>
+                            <textarea id="setting-store-address" rows="2" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory & Localization Configuration -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+                    <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                        <i data-lucide="sliders" class="w-5 h-5 text-indigo-600"></i>
+                        <h3 class="text-sm font-bold text-slate-900">Inventory & Financial Localization</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                        <!-- Currency Selection -->
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1" for="setting-currency">Base Currency *</label>
+                            <select id="setting-currency" required class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 font-semibold text-slate-800">
+                                <option value="INR">INR (₹) - Indian Rupee [Default]</option>
+                                <option value="USD">USD ($) - US Dollar</option>
+                                <option value="EUR">EUR (€) - Euro</option>
+                                <option value="GBP">GBP (£) - British Pound</option>
+                            </select>
+                            <span class="text-[10px] text-slate-400 mt-1 block">Applied across all cards, charts, and exports.</span>
+                        </div>
+
+                        <!-- Date Format -->
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1" for="setting-date-format">Display Date Format *</label>
+                            <select id="setting-date-format" required class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 font-mono">
+                                <option value="DD/MM/YYYY">DD/MM/YYYY (e.g. 25/01/2026)</option>
+                                <option value="MM/DD/YYYY">MM/DD/YYYY (e.g. 01/25/2026)</option>
+                                <option value="YYYY-MM-DD">YYYY-MM-DD (e.g. 2026-01-25)</option>
+                            </select>
+                            <span class="text-[10px] text-slate-400 mt-1 block">Standard audit log timestamp format.</span>
+                        </div>
+
+                        <!-- Low Stock Threshold -->
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1" for="setting-low-stock-threshold">Default Safety Stock Level *</label>
+                            <input type="number" min="1" id="setting-low-stock-threshold" required class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 font-bold">
+                            <span class="text-[10px] text-slate-400 mt-1 block">Trigger threshold for new items.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Action Buttons -->
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm">
+                    <button type="button" id="reset-settings-btn" class="px-4 py-2 text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors">
+                        Revert Settings to Defaults
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-colors flex items-center gap-2">
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        <span>Save Preferences</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Data Management, Backup & Factory Reset Section -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+                <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                    <i data-lucide="database" class="w-5 h-5 text-indigo-600"></i>
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900">Database & Data Persistence</h3>
+                        <p class="text-[11px] text-slate-400">LocalStorage storage statistics, JSON backups, and disaster recovery</p>
+                    </div>
+                </div>
+
+                <!-- Live Record Counts -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs">
+                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                        <span class="text-slate-400 block text-[11px]">Products in DB</span>
+                        <span id="stat-db-products" class="text-lg font-bold text-slate-800">0</span>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                        <span class="text-slate-400 block text-[11px]">Categories in DB</span>
+                        <span id="stat-db-categories" class="text-lg font-bold text-slate-800">0</span>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                        <span class="text-slate-400 block text-[11px]">Suppliers in DB</span>
+                        <span id="stat-db-suppliers" class="text-lg font-bold text-slate-800">0</span>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                        <span class="text-slate-400 block text-[11px]">Transactions in DB</span>
+                        <span id="stat-db-transactions" class="text-lg font-bold text-slate-800">0</span>
+                    </div>
+                </div>
+
+                <!-- Backup & Recovery Actions -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <!-- Export JSON -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <span class="font-bold text-xs text-slate-800 block">Export Full JSON Backup</span>
+                        <p class="text-[11px] text-slate-500">Download a complete, offline JSON snapshot of your entire database including products, suppliers, categories, transactions, and settings.</p>
+                        <button type="button" id="export-json-backup-btn" class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition-colors">
+                            <i data-lucide="download-cloud" class="w-4 h-4"></i>
+                            <span>Download JSON Backup</span>
+                        </button>
+                    </div>
+
+                    <!-- Import JSON -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <span class="font-bold text-xs text-slate-800 block">Restore from JSON Backup</span>
+                        <p class="text-[11px] text-slate-500">Upload a previously exported StockFlow JSON file to restore your database to a past snapshot.</p>
+                        <label class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 cursor-pointer transition-colors">
+                            <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+                            <span>Select JSON File</span>
+                            <input type="file" id="import-json-input" accept=".json" class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Dangerous Actions Area -->
+                <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <span class="text-xs font-bold text-slate-800 block">Demo & Reset Controls</span>
+                        <span class="text-[11px] text-slate-400">Manage sample demonstration records</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button type="button" id="reset-demo-data-btn" class="px-3.5 py-2 text-xs font-semibold rounded-lg bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 transition-colors">
+                            Reload Demo Dataset
+                        </button>
+                        <button type="button" id="clear-all-data-btn" class="px-3.5 py-2 text-xs font-semibold rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 transition-colors">
+                            Factory Reset (Wipe All)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Application Scripts -->
+    <script src="../assets/js/storage.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/settings.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            App.init('System Settings', ['Administration', 'Settings']);
+            SettingsModule.init();
+        });
+    </script>
+</body>
+</html>
